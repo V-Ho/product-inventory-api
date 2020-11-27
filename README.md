@@ -23,22 +23,30 @@ Project considerations include:
   - proper error handling and logging (although could be more comprehensive and still needs testing suite)
 
 ## Prerequisites
+When using docker-compose:
+- Ensure [Docker for Desktop](https://www.docker.com/products/docker-desktop) is installed and running
+
+When using locally:
 - Node.js - Download and Install [Node.js](https://nodejs.org/en/) with [NVM](https://github.com/creationix/nvm) (Node Version Manager) 
 - Postman - Download and Install [Postman](https://www.getpostman.com/downloads) - Implementation with postman latest version.
 
 
 ## Installation
-### Clone
+
+### 1. Run application using docker
+```
+$ git clone https://github.com/V-Ho/product-inventory-api
+$ docker-compose up -d
+```
+
+
+### 2. Run application locally
 ```
 $ git clone https://github.com/V-Ho/product-inventory-api
 $ npm install
-```
-
-```
-### Start Development Server
-```
 $ npm start
 ```
+
 
 ## Documentation
 
@@ -54,6 +62,7 @@ $ npm start
 #### PUT Request
 ```
  1. "/products/:id" => Sell/removes product with {id} and reduces inventory articles accordingly.
+ Note: the 'inventory.json' file needs to be repopulated if request returns 'product stock not available'
 
 ```
 
