@@ -3,6 +3,9 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const products = require('./controllers/products')
 const getProduct = require('./controllers/getProduct')
+const sellProduct = require('./controllers/sellProduct')
+const getList = require('./controllers/getAllProductsStock')
+const getAllProductsStock = require('./controllers/getAllProductsStock')
 
 const app = express()
 app.use(bodyParser.json())
@@ -10,14 +13,14 @@ app.use(cors())
 
 // Get all the products with stock
 app.get('/products', (req, res) => {
-  products.getList(productList =>
+  getAllProductsStock.getList(productList =>
     res.json(productList)
   )
 })
 
 // Get all the products with stock
 app.get('/products/:id', (req, res) => {
-  products.getProduct(
+  getProduct.getProduct(
     req.params.id,
     (product) => {
       res.json(product)
@@ -27,7 +30,7 @@ app.get('/products/:id', (req, res) => {
 
 // Sell a product by id
 app.put('/products/:id/sell', (req, res) => {
-  products.sellById(
+  sellProduct.sellById(
     req.params.id,
     (prodAvailable) => {
       if (prodAvailable) {
