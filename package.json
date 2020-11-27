@@ -5,6 +5,7 @@
   "main": "./api/server.js",
   "scripts": {
     "start": "nodemon",
+    "lint": "standard api/**/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -20,6 +21,7 @@
     "path": "^0.12.7"
   },
   "devDependencies": {
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.6",
+    "standard": "^16.0.3"
   }
 }
