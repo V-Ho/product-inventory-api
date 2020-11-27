@@ -1,11 +1,10 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const products = require('./controllers/products')
 const getProduct = require('./controllers/getProduct')
 const sellProduct = require('./controllers/sellProduct')
-const getList = require('./controllers/getAllProductsStock')
 const getAllProductsStock = require('./controllers/getAllProductsStock')
+const { PORT, HOST } = require('../config')
 
 const app = express()
 app.use(bodyParser.json())
@@ -42,7 +41,6 @@ app.put('/products/:id/sell', (req, res) => {
   )
 })
 
-const PORT = 3001
 app.listen(PORT, () => {
-  console.log(`app is running on PORT ${PORT}`)
+  console.log(`app is running on http://${HOST}:${PORT}`)
 })
