@@ -1,28 +1,11 @@
 const productData = require('../data/products')
 const inventoryData = require('../data/inventory')
 
-
-const getProduct = (productId, callback) => {
-  // Get product by id
-  productData.getById(productId, dataProduct => {
-    // Get inventory to check stock
-    inventoryData.getList(invtData => {
-      const inventory = invtData.inventory
-      
-      callback({
-        name: dataProduct.name,
-        id: dataProduct.id,
-        articles: dataProduct.contain_articles.map(art => ({
-          id: art.art_id,
-          amount: art.amount_of
-        })),
-        stock: getProductStock(dataProduct, inventory)
-      })
-    })
-  })
-}
-
-
+/**
+ * Gets product's articles
+ * Finds inventory article for each product article
+ * Checks how much inventory is available and returns the max number of products available
+ */
 const getProductStock = (product, inventory) => {
   const productArticles = product.contain_articles
 
@@ -50,52 +33,6 @@ const getProductStock = (product, inventory) => {
   return productStock
 }
 
-/**
- * Get all the products
- * get all the products stock
- */
-const getList = (callback) => {
-  productData.getList(prodData => {
-    const products = prodData.products
-
-    inventoryData.getList(invtData => {
-      const inventory = invtData.inventory
-
-      const transformedProductList = products.map(product => ({
-        name: product.name,
-        id: product.id,
-        stock: getProductStock(product, inventory)
-      }))
-
-      callback(transformedProductList)
-    })
-  })
-}
-
-/**
- * Gets a product from the list by id
- * using the amount_of on the articles, reduces the stock of the article by the amount
- */
-const sellById = (productId, onDone) => {
-  productData.getById(productId, product => {
-    const productArticles = product.contain_articles
-
-    inventoryData.getList(invtData => {
-      const inventory = invtData.inventory
-
-      const stock = getProductStock(product, inventory)
-      if (stock > 1) {
-        inventoryData.updateAmounts(productArticles, () => onDone(true))
-      } else {
-        onDone(false)
-      }
-    })
-  })
-}
-
 module.exports = {
-  //getProduct,
   getProductStock,
-  sellById,
-  getList
 }
