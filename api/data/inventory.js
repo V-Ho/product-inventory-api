@@ -21,13 +21,12 @@ const getByIds = (params, onDone) => {
 
 const updateAmounts = (articlesPurchased, onDone) => {
   fs.readFile(path.join(__dirname, INVENTORY_FILE_PATH), (err, data) => {
-    if (err) throw err
+    if (err) throw new Error('error reading file')
     const inventoryList = JSON.parse(data)
     const inventory = inventoryList.inventory
+    
     // modify the amounts
-
-    const newInventoryStock = inventory.reduce(
-      (currentInventory, article) => {
+    const newInventoryStock = inventory.reduce((currentInventory, article) => {
         const articleRequired = articlesPurchased.find(
           purchasedArticle => purchasedArticle.art_id === article.art_id
         )
@@ -43,6 +42,9 @@ const updateAmounts = (articlesPurchased, onDone) => {
           })
         } else {
           currentInventory.push(article)
+        }
+        if (inventoryList === currentInventory) {
+          throw new Error('inventory amounts not updated')
         }
         return currentInventory
       },
@@ -60,7 +62,7 @@ const updateAmounts = (articlesPurchased, onDone) => {
 
 const getList = (callback) => {
   fs.readFile(path.join(__dirname, INVENTORY_FILE_PATH), (err, data) => {
-    if (err) throw err
+    if (err) throw new Error('error reading file')
     const inventoryList = JSON.parse(data)
     callback(inventoryList)
   })
