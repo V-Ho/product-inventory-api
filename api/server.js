@@ -4,6 +4,9 @@ const cors = require('cors')
 const getProduct = require('./controllers/getProduct')
 const sellProduct = require('./controllers/sellProduct')
 const getAllProductsStock = require('./controllers/getAllProductsStock')
+const getAll = require('./controllers/promiseGetProduct')
+const {getProductsFile} = require('./data/promiseProducts')
+
 const { PORT, HOST } = require('../config')
 
 const app = express()
@@ -39,6 +42,21 @@ app.put('/products/:id/sell', (req, res) => {
       }
     }
   )
+})
+
+// use promise to return products
+app.get('/promiseProd', (req, res) => {
+  //getAll.handleGetProducts()
+  getProductsFile()
+  .then(results => {
+    res.status(200)
+    .json({
+      status: 'success',
+      data: results,
+      message: 'retrieved all products'
+    })
+  })
+  .catch(err => res.status(400).json('error getting products'))
 })
 
 app.listen(PORT, () => {
